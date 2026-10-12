@@ -6,30 +6,49 @@ from app.schemas import JobSearchResult
 
 
 def main() -> None:
-    prompt = """
-    Find 3 example job listings for Python developers in India.
+    print("=" * 45)
+    print("       STRUCTURED OUTPUT AGENT")
+    print("=" * 45)
+    print("Generate structured job-search data using Gemini.")
+    print("Type 'exit' or 'quit' to stop.\n")
 
-    Return a JSON object containing a "jobs" list.
-    Each job must include:
-    - title: string
-    - company: string
-    - location: string
-    - experience_years: integer between 0 and 50
+    try:
+        generate_response = build_gemini_generator(JobSearchResult)
+    except (ValueError, Exception) as exc:
+        print(f"Failed to initialize Gemini client: {exc}")
+        return
 
-    Return only structured data that follows the required schema.
-    """
+    while True:
+        try:
+            prompt = input("Enter your prompt: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\nExiting agent. Goodbye!")
+            break
 
-    generate_response = build_gemini_generator(JobSearchResult)
+        if prompt.lower() in {"exit", "quit"}:
+            print("Goodbye!")
+            break
 
-    result = run_with_retries(
-        generate_response=generate_response,
-        schema=JobSearchResult,
-        prompt=prompt,
-        max_attempts=3,
-    )
+        if not prompt:
+            print("Prompt cannot be empty. Please try again.\n")
+            continue
 
-    print("\nValidated structured output:\n")
-    print(json.dumps(result.model_dump(), indent=2))
+        try:
+            print("\nGenerating response...\n")
+
+            result = run_with_retries(
+                generate_response=generate_response,
+                schema=JobSearchResult,
+                prompt=prompt,
+                max_attempts=3,
+            )
+
+            print("Validated structured output:\n")
+            print(json.dumps(result.model_dump(), indent=2))
+            print()
+
+        except Exception as exc:
+            print(f"Could not generate a valid response: {exc}\n")
 
 
 if __name__ == "__main__":
