@@ -37,7 +37,7 @@ def parse_structured_output(
         ) from exc
 
     try:
-        return schema.model_validate(data, strict=True)
+        return schema.model_validate(data, strict=False)
 
     except ValidationError as exc:
         raise StructuredOutputError(

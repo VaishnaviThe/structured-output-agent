@@ -1,30 +1,31 @@
 # Structured Output Agent
 
-A Python-based AI agent that uses Google's Gemini API to generate structured JSON responses and validates them using Pydantic.
+A Python application that uses Google's Gemini API to generate structured,
+validated JSON outputs using Pydantic schemas.
 
-The project demonstrates reliable LLM output processing through schema validation, retry mechanisms, API error handling, and logging.
+The application supports job-search data generation and task summarization.
+It includes schema validation, retry handling, error logging, and automated tests.
 
 ## Features
 
-- **Gemini API Integration:** Generate AI responses using Google's Gemini models.
-- **Structured Output:** Request JSON responses that follow a defined schema.
-- **Pydantic Validation:** Validate generated data against strict models.
-- **Retry Mechanism:** Retry generation when the output fails validation.
-- **API Retry Handling:** Retry eligible temporary API and network failures.
-- **Error Handling:** Handle malformed JSON, schema validation errors, and API failures.
-- **Logging:** Record generation attempts, validation failures, and API errors.
-- **Tool Response Validation:** Validate tool outputs against Pydantic schemas.
-- **Automated Tests:** Test core functionality using pytest.
+- Generate structured job-search results.
+- Generate structured task summaries.
+- Validate LLM responses using Pydantic.
+- Reject missing fields, invalid values, and unexpected fields.
+- Retry generation when responses contain invalid JSON or fail validation.
+- Retry transient Gemini API and network errors.
+- Log generation attempts and validation failures.
+- Interactive command-line interface.
+- Automated tests using pytest.
 
 ## Tech Stack
 
 - Python 3.12+
-- Google Gen AI SDK
-- Gemini API
+- Google Gemini API
+- `google-genai`
 - Pydantic
+- `python-dotenv`
 - pytest
-- python-dotenv
-- httpx
 
 ## Project Structure
 
@@ -32,20 +33,14 @@ The project demonstrates reliable LLM output processing through schema validatio
 structured-output-agent/
 ├── app/
 │   ├── __init__.py
-│   ├── agent.py
-│   ├── gemini_client.py
-│   ├── logging_config.py
-│   ├── main.py
-│   ├── parser.py
 │   ├── schemas.py
-│   └── tools.py
+│   ├── parser.py
+│   ├── tools.py
+│   ├── agent.py
+│   ├── logging_config.py
+│   ├── gemini_client.py
+│   └── main.py
 ├── tests/
-│   ├── __init__.py
-│   ├── test_agent.py
-│   ├── test_gemini_client.py
-│   ├── test_parser.py
-│   ├── test_schemas.py
-│   └── test_tools.py
 ├── logs/
 ├── .env.example
 ├── .gitignore
